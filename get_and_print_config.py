@@ -13,9 +13,25 @@ def main():
     #gp.check_result(gp.use_python_logging())
     
     # open camera connection
+    #camera = gp.check_result(gp.gp_camera_new())
+    #context = gp.gp_context_new()
+
+    camera_list = []
+    for name, addr in gp.check_result(gp.gp_camera_autodetect()):
+        camera_list.append((name, addr))
+    if not camera_list:
+        print('No camera detected')
+        return 1
+    else:
+        print(camera_list)
+    
+    # open camera connection
     camera = gp.check_result(gp.gp_camera_new())
     context = gp.gp_context_new()
-    gp.check_result(gp.gp_camera_init(camera, context))
+    
+    if gp.check_result(gp.gp_camera_init(camera, context)) != 0:
+        print("Pas de connexion")
+        return 1 
     
     # get configuration tree
     config = gp.check_result(gp.gp_camera_get_config(camera, context))
