@@ -30,7 +30,7 @@ def main():
     valShutterspeed = 20       # 15=1s
     valAperture = 0            # 0=min
     valCapturetarget = 1       # 1=Carte memoire
-    
+
     # get configuration tree
     config = gp.check_result(gp.gp_camera_get_config(camera, context))
     # find the capture target config item
@@ -41,6 +41,10 @@ def main():
     aperture = gp.check_result(gp.gp_widget_get_child_by_name(config, 'aperture'))
     capturetarget = gp.check_result(gp.gp_widget_get_child_by_name(config, 'capturetarget'))
     
+    # Print Info
+    print(">>>> Vitesse {} Ouverture {} ISO {} ".format(shutterspeed, aperture, iso))
+    print(">>>> Balance {} Format {} Destination {} ".format(whitebalance, imageformat, capturetarget))
+
     # check value in range
     count = gp.check_result(gp.gp_widget_count_choices(iso))
     if valIso < 0 or valIso >= count:
