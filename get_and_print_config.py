@@ -1,3 +1,10 @@
+#!/usr/bin/env python3
+
+from __future__ import print_function
+
+import logging
+import sys
+
 import gphoto2 as gp
 
 def main():
@@ -28,8 +35,8 @@ def main():
     confCapturetarget = gp.check_result(gp.gp_widget_get_value(capturetarget))
 
     # Print Info
-    print(">>>> Vitesse {} Ouverture {} ISO {} ".format(confShutterspeed, confAperture, confIso))
-    print(">>>> Balance {} Format {} Destination {} ".format(confWhitebalance, confImageformat, confCapturetarget))
+    print(">>>> Vitesse {}s - Ouverture f/{} - ISO {} ".format(confShutterspeed, confAperture, confIso))
+    print(">>>> Balance {} - Format {} - Destination {} ".format(confWhitebalance, confImageformat, confCapturetarget))
 
     # clean up
     gp.check_result(gp.gp_camera_exit(camera, context))
