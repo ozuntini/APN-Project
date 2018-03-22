@@ -16,8 +16,8 @@ import gphoto2 as gp
 
 def main():
     # use Python logging
-    logging.basicConfig(format='%(levelname)s: %(name)s: %(message)s', level=logging.WARNING)
-    gp.check_result(gp.use_python_logging())
+    #logging.basicConfig(format='%(levelname)s: %(name)s: %(message)s', level=logging.WARNING)
+    #gp.check_result(gp.use_python_logging())
     
     # open camera connection
     camera = gp.check_result(gp.gp_camera_new())
