@@ -74,9 +74,12 @@ def main():
                 print(i, end=', ')
             print()
         else:
+            liste=[]
             if choice =='*':
-                choice = listeParametres
-            for i in choice:
+                liste = listeParametres
+            else:
+                liste.append(choice)
+            for i in liste:
                 # find the capture target config item
                 try:
                     parameters = config.get_child_by_name(i)
