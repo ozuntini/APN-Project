@@ -12,6 +12,8 @@ import gphoto2 as gp
 
 logFile = "get_and_print_config"
 
+listeParametres = ('cameramodel', 'iso', 'imageformat', 'whitebalance', 'shutterspeed', 'aperture', 'capturetarget')
+
 def main():
     # use Python logging
     logging.basicConfig(filename= logFile + '.log',
@@ -61,17 +63,30 @@ def main():
     config = camera.get_config(context)
     # answer a parameters
     print(name)
-    while choice != "":
+    while choice != '':
         choice = input('Indiquez le paramètre choisi : ')
-        # find the capture target config item
-        try:
-            parameters = config.get_child_by_name(choice)
-        except:
-            print('Le paramètre', choice, 'est inconnu !')
-            return 5
-        confName = parameters.get_value()
-        # Print Info
-        print('{} >>>> Paramètre {} = {}'.format(name, choice, confName))
+        if choice == '':
+            break
+        elif choice =='?':
+            # Print Info
+            print('{} >>>> Paramètres :'.format(name,), end=' ')
+            for i in listeParametres:
+                print(i, end=', ')
+            print()
+        else:
+            if choice =='*':
+                choice = listeParametres
+            for i in choice:
+                # find the capture target config item
+                try:
+                    parameters = config.get_child_by_name(i)
+                except:
+                    print('Le paramètre', i, 'est inconnu !')
+                    camera.exit(context)
+                    return 5
+                confName = parameters.get_value()
+                # Print Info
+                print('{} > Paramètre {:15} = {}'.format(name, i, confName))
     # clean up
     camera.exit(context)
     return 0
