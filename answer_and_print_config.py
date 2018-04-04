@@ -11,7 +11,6 @@ import sys
 import gphoto2 as gp
 
 logFile = "get_and_print_config"
-
 listeParametres = ('cameramodel', 'iso', 'imageformat', 'whitebalance', 'shutterspeed', 'aperture', 'capturetarget')
 
 def main():
@@ -87,9 +86,9 @@ def main():
                     print('Le paramètre', i, 'est inconnu !')
                     camera.exit(context)
                     return 5
-                confName = parameters.get_value()
+                confValue = parameters.get_value()
                 # Print Info
-                print('{} > Paramètre {:15} = {}'.format(name, i, confName))
+                print('{} > Paramètre {:15} = {}'.format(name, i, confValue))
     # clean up
     camera.exit(context)
     return 0
