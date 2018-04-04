@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf8 -*-
 #Liste les APN détectés et propose le choix
-#Récupère la configuration de celui sélectionné
+#Applique la configuration à celui sélectionné
 
 from __future__ import print_function
 
@@ -11,14 +11,28 @@ import sys
 import gphoto2 as gp
 
 logFile = "get_and_print_config"
-listeParametres = ('cameramodel', 'iso', 'imageformat', 'whitebalance', 'shutterspeed', 'aperture', 'capturetarget')
+dicoParameters = {
+    'iso': '200', 
+    'imageformat': 'RAW', 
+    'whitebalance': 'Daylight', 
+    'shutterspeed': '1/250', 
+    'aperture': '4', 
+    'capturetarget': 'Memory card'
+    }
+
+# Ajouter une fonction de contrôle de la valeur
+def check_parameters(param,value):
+    status = 0
+    for i in param.get_choices():
+        if i == value:
+            status = 1
+    return status
 
 def main():
     # use Python logging
     logging.basicConfig(filename= logFile + '.log',
         format='%(asctime)s: %(levelname)s: %(name)s: %(message)s', level=logging.WARNING)
     gp.check_result(gp.use_python_logging())
-
     # choose camera
     camera_list = []
     for name, addr in gp.check_result(gp.gp_camera_autodetect()):
@@ -60,9 +74,8 @@ def main():
         return 4
     # get configuration tree
     config = camera.get_config(context)
-    configDictionnary = {}
     # find the capture target config item
-    for i in listeParametres:
+    for i in dicoParameters.keys():
         # find the capture target config item
         try:
             parameters = config.get_child_by_name(i)
@@ -70,16 +83,15 @@ def main():
             print('Le paramètre', i, 'est inconnu !')
             camera.exit(context)
             return 5
-        confValue = parameters.get_value()
-        # append dictionnary
-        configDictionnary[i] = confValue
-    # Print Info
-    print("====", name, "====")
-    for i in listeParametres:
-        print('> Paramètre {:15} = {}'.format(i, configDictionnary.get(i)))
-
+        if check_parameters(parameters,dicoParameters.get(i)) == 1:
+            parameters.set_value(dicoParameters.get(i))
+            print('> Paramètre {:15} = {:12} appliqué'.format(parameters.get_name(),parameters.get_value()))
+        else:
+            print('> Paramètre {:15} = {:12} non valide'.format(parameters.get_name(),dicoParameters.get(i)))
+    # set config
+    camera.set_config(config,context)
     # clean up
-    gp.check_result(gp.gp_camera_exit(camera, context))
+    camera.exit(context)
     return 0
 
 if __name__ == "__main__":
