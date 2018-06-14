@@ -1,3 +1,4 @@
+13/06/2018
 Ajout dans le Readme de la commande pour passer Gphoto2 en version >= 2.5.17.
 Gestion automatique du fichier log en prenant comme nom le nom du script Python.
 Modification de set-param.py pour afficher l'appareil détecté même quand il n'y en a qu'un.
