@@ -10,7 +10,7 @@ import sys
 
 import gphoto2 as gp
 
-logFile = "get_and_print_config"
+logFile = sys.argv[0]
 dicoParameters = {
     'iso': '200', 
     'imageformat': 'RAW', 
@@ -41,12 +41,14 @@ def main():
         print('Err 1 : Pas d\'APN détecté !')
         return 1
     choice = 0
+    
+    # sort by first item
+    camera_list.sort(key=lambda x: x[0])
+    # print list of camera
+    for index, (name, addr) in enumerate(camera_list):
+        print('{:d}:  {:s}  {:s}'.format(index, addr, name))
     if len(camera_list) > 1:
-        # sort by first item
-        camera_list.sort(key=lambda x: x[0])
         # ask user to choose one
-        for index, (name, addr) in enumerate(camera_list):
-            print('{:d}:  {:s}  {:s}'.format(index, addr, name))
         choice = input('Indiquez le n° d\'APN choisi : ')
         # test answer
         try:
@@ -57,6 +59,7 @@ def main():
         if choice < 0 or choice >= len(camera_list):
             print('Err 3 : Veuillez saisir une des valeurs proposée !')
             return 3
+
     # initialise chosen camera
     name, addr = camera_list[choice]
     camera = gp.Camera()
@@ -74,6 +77,7 @@ def main():
         return 4
     # get configuration tree
     config = camera.get_config(context)
+    print(name)
     # find the capture target config item
     for i in dicoParameters.keys():
         # find the capture target config item

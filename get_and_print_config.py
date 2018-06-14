@@ -10,7 +10,7 @@ import sys
 
 import gphoto2 as gp
 
-logFile = "get_and_print_config"
+logFile = sys.argv[0]
 listeParametres = ('cameramodel', 'iso', 'imageformat', 'whitebalance', 'shutterspeed', 'aperture', 'capturetarget')
 
 def main():
